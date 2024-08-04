@@ -1,0 +1,21 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.29)
+
+PROJECT(fq-matrix-c C)
+
+### Require out-of-source builds
+FILE(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
+if(EXISTS "${LOC_PATH}")
+  MESSAGE(
+    FATAL_ERROR 
+    "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles."
+  )
+endif()
+
+
+OPTION(TEST "是否执行测试用例？" OFF)
+
+if (TEST)
+  ADD_SUBDIRECTORY(test math-c)
+else()
+  ADD_SUBDIRECTORY(src main-c)
+endif()
