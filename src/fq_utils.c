@@ -14,6 +14,8 @@ LADEF Vi equals(Vf a, Vf b) {
     return fabsf(a - b) < EPSILON * max(1.0, max(fabsf(a), fabsf(b)));
 }
 
+LADEF Vi exactEquals(Vi a, Vi b) { return a == b; }
+
 LADEF Vf deg2rad(Vf deg) { return deg * PI / 180.0; }
 
 Matrix *mat_create(Vi width, Vi height, Vf fill) {
