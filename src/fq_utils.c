@@ -16,7 +16,8 @@ LADEF Vi equals(Vf a, Vf b) {
 
 LADEF Vf deg2rad(Vf deg) { return deg * PI / 180.0; }
 
-Matrix *mat_create(Vi length, Vf fill) {
+Matrix *mat_create(Vi width, Vi height, Vf fill) {
+    Vi length = width * height;
     assert(length >= 2 && length <= 16);
 
     Matrix *mat = (Matrix *)malloc(sizeof(Matrix));
@@ -25,7 +26,8 @@ Matrix *mat_create(Vi length, Vf fill) {
         return NULL;
     }
 
-    mat->length = length;
+    mat->width = width;
+    mat->height = height;
     mat->data = (Vf *)malloc(sizeof(Vf) * length);
 
     if (mat->data == NULL) {

@@ -4,7 +4,8 @@
 typedef int Vi;
 typedef float Vf;
 typedef struct {
-  Vi length;
+  Vi width;
+  Vi height;
   Vf *data;
 } Matrix;
 
@@ -24,7 +25,7 @@ LADEF Vf max(Vf a, Vf b);
 LADEF Vi equals(Vf a, Vf b);
 LADEF Vf deg2rad(Vf deg);
 
-Matrix *mat_create(Vi length, Vf fill);
+Matrix *mat_create(Vi width, Vi height, Vf fill);
 Vi mat_destroy(Matrix *mat);
 
 #endif
