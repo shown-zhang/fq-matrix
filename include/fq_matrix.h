@@ -8,4 +8,10 @@ void copy(Matrix *dest, const Matrix *const src);
 void setMatrix(Matrix *mat, Vf *data, Vi length);
 Matrix *transpose(Matrix mat);
 
+Matrix *cofactor(const Matrix *const mat, Vi row, Vi col);
+Matrix *adjoint(const Matrix *const mat);
+Vf determinant(const Matrix *const mat);
+Matrix *inverse(const Matrix *const mat);
+
+
 #endif

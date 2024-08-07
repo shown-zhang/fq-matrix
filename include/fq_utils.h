@@ -1,7 +1,7 @@
 #ifndef CONST_VAR
 #define CONST_VAR
 
-typedef int Vi;
+typedef short Vi;
 typedef float Vf;
 typedef struct {
   Vi width;
