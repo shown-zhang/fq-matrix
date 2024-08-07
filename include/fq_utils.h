@@ -4,13 +4,13 @@
 typedef short Vi;
 typedef float Vf;
 typedef struct {
-  Vi width;
-  Vi height;
+  Vi col;
+  Vi row;
   Vf *data;
 } Matrix;
 
 #define EPSILON 0.00001
-#define LADEF static inline
+#define LADEF 
 #define PI 3.141592653589793
 
 #endif
@@ -25,8 +25,5 @@ LADEF Vf max(Vf a, Vf b);
 LADEF Vi equals(Vf a, Vf b);
 LADEF Vi exactEquals(Vi a, Vi b);
 LADEF Vf deg2rad(Vf deg);
-
-Matrix *mat_create(Vi width, Vi height, Vf fill);
-Vi mat_destroy(Matrix *mat);
 
 #endif
