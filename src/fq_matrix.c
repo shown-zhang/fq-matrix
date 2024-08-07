@@ -79,8 +79,8 @@ Matrix *transpose(Matrix mat) {
     return NULL;
   }
 
-  for (int i = 0; i < mat.width; i++) {
-    for (int j = 0; j < mat.height; j++) {
+  for (Vi i = 0; i < mat.width; i++) {
+    for (Vi j = 0; j < mat.height; j++) {
       out->data[i * out->height + j] = mat.data[j * mat.height + i];
     }
   }
@@ -101,14 +101,14 @@ Matrix *cofactor(const Matrix *const mat, Vi row, Vi col) {
     return NULL;
   }
 
-  int x = 0;
-  int y = 0;
-  for (int i = 0; i < mat->width; i++) {
+  Vi x = 0;
+  Vi y = 0;
+  for (Vi i = 0; i < mat->width; i++) {
     if (i == col) {
       continue;
     }
     y = 0;
-    for (int j = 0; j < mat->height; j++) {
+    for (Vi j = 0; j < mat->height; j++) {
       if (j == row) {
         continue;
       }
@@ -132,7 +132,7 @@ Vf determinant(const Matrix *const mat) {
   }
 
   Vf det = 0;
-  for (int i = 0; i < mat->width; i++) {
+  for (Vi i = 0; i < mat->width; i++) {
     Matrix *cof = cofactor(mat, 0, i);
     det += mat->data[i] * determinant(cof) * (i % 2 == 0 ? 1 : -1);
     mat_destroy(cof);
@@ -152,8 +152,8 @@ Matrix *adjoint(const Matrix *const mat) {
     return NULL;
   }
 
-  for (int i = 0; i < mat->width; i++) {
-    for (int j = 0; j < mat->height; j++) {
+  for (Vi i = 0; i < mat->width; i++) {
+    for (Vi j = 0; j < mat->height; j++) {
       Matrix *cof = cofactor(mat, j, i);
       // Transpose the cofactor matrix ?
       out->data[j * out->height + i] =
