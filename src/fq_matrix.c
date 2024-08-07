@@ -5,7 +5,9 @@
 
 Matrix *mat_create(Vi row, Vi col, Vf fill) {
   Vi length = row * col;
-  assert(length >= 2 && length <= 16);
+  if (length < 2 || length > 16) {
+    return NULL;
+  }
 
   Matrix *mat = (Matrix *)malloc(sizeof(Matrix));
 
