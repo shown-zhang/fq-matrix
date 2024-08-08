@@ -8,7 +8,7 @@ void identity(Matrix *mat);
 Matrix *clone(const Matrix * const mat);
 void copy(Matrix *dest, const Matrix *const src);
 void setMatrix(Matrix *mat, Vf *data, Vi length);
-Matrix *transpose(Matrix mat);
+Matrix *transpose(Matrix *mat);
 
 Matrix *cofactor(const Matrix *const mat, Vi row, Vi col);
 Matrix *adjoint(const Matrix *const mat);

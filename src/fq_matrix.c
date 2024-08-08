@@ -69,16 +69,17 @@ Matrix *clone(const Matrix *const mat) {
     return NULL;
   }
 
-  assert(mat->row >= 2 && mat->row <= 4);
-  assert(mat->col >= 2 && mat->col <= 4);
+  Vi length = mat->col * mat->row;
+
+  if (length <= 0) {
+    return NULL;
+  }
 
   Matrix *out = mat_create(mat->row, mat->col, 0);
 
   if (out == NULL) {
     return NULL;
   }
-
-  Vi length = mat->col * mat->row;
 
   for (Vi i = 0; i < length; i++) {
     out->data[i] = mat->data[i];
@@ -87,12 +88,17 @@ Matrix *clone(const Matrix *const mat) {
 }
 
 void copy(Matrix *dest, const Matrix *const src) {
-  assert(src != NULL);
-  assert(dest != NULL);
-  assert(dest->data != NULL);
-  assert(src->data != NULL);
-  assert(dest->row == src->row);
-  assert(dest->col == src->col);
+  if (dest == NULL || src == NULL) {
+    return;
+  }
+
+  if (dest->data == NULL || src->data == NULL) {
+    return;
+  }
+
+  if (dest->row != src->row || dest->col != src->col) {
+    return;
+  }
 
   Vi length = dest->row * dest->col;
 
@@ -102,31 +108,41 @@ void copy(Matrix *dest, const Matrix *const src) {
 }
 
 void setMatrix(Matrix *mat, Vf *data, Vi length) {
-  assert(mat != NULL);
-  assert(data != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row != 0 && mat->row != 0);
-  assert(mat->row * mat->row <= length);
+  if (mat == NULL) {
+    return;
+  }
 
-  for (Vi i = 0; i < mat->row * mat->row; i++) {
+  if (mat->data == NULL || data == NULL) {
+    return;
+  }
+
+  if (length <= 0 || mat->row * mat->col > length) {
+    return;
+  }
+
+  for (Vi i = 0; i < mat->row * mat->col; i++) {
     mat->data[i] = data[i];
   }
 }
 
-Matrix *transpose(Matrix mat) {
-  assert(mat.data != NULL);
-  assert(mat.row >= 2 && mat.row <= 4);
-  assert(mat.col >= 2 && mat.col <= 4);
+Matrix *transpose(Matrix *mat) {
+  if (mat == NULL || mat->data == NULL) {
+    return NULL;
+  }
 
-  Matrix *out = mat_create(mat.row, mat.col, 0);
+  if (mat->row <= 0 || mat->row <= 0) {
+    return NULL;
+  }
+
+  Matrix *out = mat_create(mat->col, mat->row, 0);
 
   if (out == NULL) {
     return NULL;
   }
 
-  for (Vi i = 0; i < mat.row; i++) {
-    for (Vi j = 0; j < mat.col; j++) {
-      out->data[i * mat.row + j] = mat.data[j * mat.row + i];
+  for (Vi i = 0; i < out->row; i++) {
+    for (Vi j = 0; j < out->col; j++) {
+      out->data[i * out->row + j] = mat->data[j * mat->row + i];
     }
   }
   return out;
@@ -204,7 +220,7 @@ Matrix *adjoint(const Matrix *const mat) {
       mat_destroy(cof);
     }
   }
-  return transpose(*out);
+  return transpose(out);
 }
 
 Matrix *inverse(const Matrix *const mat) {

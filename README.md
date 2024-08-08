@@ -10,10 +10,9 @@ If you are a beginner and are learning graphics related knowledge like matrix. T
 
 We use [cmake](https://cmake.org/) to build project. Please make sure you have cmake installed on your computer.
 
-you can run this following shells step by step to compile.
+Run the following shell to compile:
 
 ```
-./clear.sh
 ./cbuild.sh
 ```
 
@@ -29,26 +28,10 @@ lib
 
 We use [CuTest](https://cutest.sourceforge.net/) to manage/execute test cases, which is a **Small** and **Easy to Deploy** unit testing library.
 
-1. Run the following shells in sequence.
+Run the following shell to start unit test:
 
 ```javascript
-./clear.sh
-./cbuild.sh
 ./ctest.sh
-```
-
-2.  The product will be produced in the **bin/** folder.
-
-```
-bin
-└── FQ_MATRIX_CTEST
-```
-
-3. Then run `FQ_MATRIX_CTEST`.
-
-```
-cd bin
-./FQ_MATRIX_CTEST
 ```
 
 #### Contribute
