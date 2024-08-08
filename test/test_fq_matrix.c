@@ -1,19 +1,6 @@
 /**
 This file contains basic test cases for the functions in fq_matrix.c.
-For details on how to execute/add test cases, please refer to the README.md
-And test functions are named in the format of test_XXX_base or test_XXX_edge.
-For example, test_mat_create_base is a test case for the function mat_create.
-
-If you find a new test case, you need to create a new function in the form of
-test_XXX_YYY. For example, test_mat_create_withzero is a test case for the
-function mat_create in fq_matrix.c with fill = 0.0.
-
-Finally, you need to add new test cases to the suite.
-For example, you need to add the following code to the FqMatrixGetSuite
-function:
-        SUITE_ADD_TEST(suite, test_mat_create_withzero);
-
-You can refer to the test cases in test/test_fq_matrix.c for details.
+For details on how to execute/add test cases, please refer to the README
 **/
 
 #include "../include/fq_matrix.h"
