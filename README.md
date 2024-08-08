@@ -12,10 +12,14 @@ mkdir build && cd build && cmake .. && make
 
 The compilation results are stored in the **lib/** folder
 
-- test
+### unit test
 
-```
-mkdir testBuild && cd testBuild && cmake .. -DTEST=ON && make
+// execute test cases
+
+```javascript
+./clear.sh
+./cbuild.sh
+./ctest.sh
 ```
 
 The compilation results are stored in the **bin/** folder

@@ -5,7 +5,7 @@
 
 Matrix *mat_create(Vi row, Vi col, Vf fill) {
   Vi length = row * col;
-  if (length < 2 || length > 16) {
+  if (length <= 0) {
     return NULL;
   }
 
@@ -36,15 +36,24 @@ Vi mat_destroy(Matrix *mat) {
   }
 
   free(mat->data);
+  mat->data = NULL;
   free(mat);
+  mat = NULL;
   return 0;
 }
 
 void identity(Matrix *mat) {
-  assert(mat != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row == mat->col);
-  assert(mat->row >= 2 && mat->row <= 4);
+  if (mat == NULL || mat->data == NULL) {
+    return;
+  }
+
+  if (mat->row != mat->col) {
+    return;
+  }
+
+  if (mat->row < 2 || mat->row > 4) {
+    return;
+  }
 
   for (Vi i = 0; i < mat->row; i++) {
     for (Vi j = 0; j < mat->col; j++) {
