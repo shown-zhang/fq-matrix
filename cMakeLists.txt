@@ -12,7 +12,7 @@ if(EXISTS "${LOC_PATH}")
 endif()
 
 
-OPTION(TEST "是否执行测试用例？" OFF)
+OPTION(TEST "open test options？" OFF)
 
 if (TEST)
   ADD_SUBDIRECTORY(test math-c)
