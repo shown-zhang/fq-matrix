@@ -42,6 +42,22 @@ Vi mat_destroy(Matrix *mat) {
   return 0;
 }
 
+Vf mat_find(const Matrix *const mat, Vi row, Vi col) {
+  if (mat == NULL || mat->data == NULL) {
+    return 0;
+  }
+
+  if (row < 0 || row >= mat->row) {
+    return 0;
+  }
+
+  if (col < 0 || col >= mat->col) {
+    return 0;
+  }
+
+  return mat->data[row * mat->col + col];
+}
+
 void identity(Matrix *mat) {
   if (mat == NULL || mat->data == NULL) {
     return;
@@ -142,19 +158,24 @@ Matrix *transpose(Matrix *mat) {
 
   for (Vi i = 0; i < out->row; i++) {
     for (Vi j = 0; j < out->col; j++) {
-      out->data[i * out->row + j] = mat->data[j * mat->row + i];
+      out->data[i * out->col + j] = mat_find(mat, j, i);
     }
   }
   return out;
 }
 
 Matrix *cofactor(const Matrix *const mat, Vi row, Vi col) {
-  assert(mat != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row >= 2 && mat->row <= 4);
-  assert(mat->col >= 2 && mat->col <= 4);
-  assert(row >= 0 && row < mat->row);
-  assert(col >= 0 && col < mat->col);
+  if (mat == NULL || mat->data == NULL) {
+    return NULL;
+  }
+
+  if (mat->row * mat->col <= 0) {
+    return NULL;
+  }
+
+  if (row < 0 || row >= mat->row || col < 0 || col >= mat->col) {
+    return NULL;
+  }
 
   Matrix *out = mat_create(mat->row - 1, mat->col - 1, 0);
 
@@ -173,7 +194,7 @@ Matrix *cofactor(const Matrix *const mat, Vi row, Vi col) {
       if (j == col) {
         continue;
       }
-      out->data[x * mat->row + y] = mat->data[i * mat->row + j];
+      out->data[x * out->col + y] = mat_find(mat, i, j);
       y++;
     }
     x++;
@@ -182,17 +203,28 @@ Matrix *cofactor(const Matrix *const mat, Vi row, Vi col) {
 }
 
 Vf determinant(const Matrix *const mat) {
-  assert(mat != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row >= 2 && mat->row <= 4);
-  assert(mat->row == mat->col);
+  if (mat == NULL || mat->data == NULL) {
+    return 0;
+  }
+
+  if (mat->row != mat->col) {
+    return 0;
+  }
+
+  if (mat->row < 1) {
+    return 0;
+  }
+
+  if (mat->row == 1) {
+    return mat->data[0];
+  }
 
   if (mat->row == 2) {
     return mat->data[0] * mat->data[3] - mat->data[1] * mat->data[2];
   }
 
   Vf det = 0;
-  for (Vi i = 0; i < mat->row; i++) {
+  for (Vi i = 0; i < mat->col; i++) {
     Matrix *cof = cofactor(mat, 0, i);
     det += mat->data[i] * determinant(cof) * (i % 2 == 0 ? 1 : -1);
     mat_destroy(cof);
@@ -201,10 +233,21 @@ Vf determinant(const Matrix *const mat) {
 }
 
 Matrix *adjoint(const Matrix *const mat) {
-  assert(mat != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row >= 2 && mat->row <= 4);
-  assert(mat->row >= 2 && mat->row <= 4);
+  if (mat == NULL) {
+    return NULL;
+  }
+
+  if (mat->data == NULL) {
+    return NULL;
+  }
+
+  if (mat->row != mat->col) {
+    return NULL;
+  }
+
+  if (mat->row < 2) {
+    return NULL;
+  }
 
   Matrix *out = mat_create(mat->row, mat->col, 0);
 
@@ -215,7 +258,7 @@ Matrix *adjoint(const Matrix *const mat) {
   for (Vi i = 0; i < mat->row; i++) {
     for (Vi j = 0; j < mat->col; j++) {
       Matrix *cof = cofactor(mat, i, j);
-      out->data[i * out->row + j] =
+      out->data[i * out->col + j] =
           determinant(cof) * ((i + j) % 2 == 0 ? 1 : -1);
       mat_destroy(cof);
     }
@@ -224,15 +267,24 @@ Matrix *adjoint(const Matrix *const mat) {
 }
 
 Matrix *inverse(const Matrix *const mat) {
-  assert(mat != NULL);
-  assert(mat->data != NULL);
-  assert(mat->row == mat->col);
-  assert(mat->row >= 2 && mat->row <= 4);
+  if (mat == NULL || mat->data == NULL) {
+    return NULL;
+  }
+
+  if (mat->row != mat->col) {
+    return NULL;
+  }
+
+  if (mat->row < 2) {
+    return NULL;
+  }
 
   Vf det = determinant(mat);
   if (det == 0) {
     return NULL;
   }
+
+  det = 1 / det;
 
   Matrix *adj = adjoint(mat);
   if (adj == NULL) {
@@ -247,7 +299,7 @@ Matrix *inverse(const Matrix *const mat) {
 
   for (Vi i = 0; i < mat->row; i++) {
     for (Vi j = 0; j < mat->col; j++) {
-      out->data[i * mat->row + j] = adj->data[i * mat->row + j] / det;
+      out->data[i * mat->col + j] = mat_find(adj, i, j) * det;
     }
   }
 
@@ -265,20 +317,14 @@ void printMatrix(const Matrix *const mat) {
   } else if (mat->row == 0 || mat->col == 0) {
     printf("ERROR: Matrix is empty\n");
     return;
-  } else if (mat->row < 2 || mat->row > 4) {
-    printf("ERROR: Matrix row is invalid\n");
-    return;
-  } else if (mat->col < 2 || mat->col > 4) {
-    printf("ERROR: Matrix col is invalid\n");
-    return;
   }
 
   printf("Matrix: %d x %d\n", mat->row, mat->col);
 
-  printf("[");
+  printf("[\n");
   for (Vi i = 0; i < mat->row; i++) {
     for (Vi j = 0; j < mat->col; j++) {
-      printf("%f ", mat->data[i * mat->row + j]);
+      printf("\t%f ", mat->data[i * mat->row + j]);
     }
     printf("\n");
   }

@@ -1,15 +1,7 @@
 #!/bin/bash
 echo "Running unit tests: FQ_MATRIX_CTEST..."
-echo "Cleaning up..."
-rm -rf testBuild
-rm -rf bin
-rm -rf build
-rm -rf lib
 
-printf "\n\n"
-echo "Building library: "
-mkdir build && cd build && cmake .. && make
-cd ..
+bash cbuild.sh
 
 printf "\n\n"
 echo "Building unit tests: "

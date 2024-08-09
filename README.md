@@ -13,7 +13,7 @@ We use [cmake](https://cmake.org/) to build project. Please make sure you have c
 Run the following shell to compile:
 
 ```
-./cbuild.sh
+bash cbuild.sh
 ```
 
 And the product is produced in **lib/** folder.
@@ -30,8 +30,8 @@ We use [CuTest](https://cutest.sourceforge.net/) to manage/execute test cases, w
 
 Run the following shell to start unit test:
 
-```javascript
-./ctest.sh
+```
+bash ctest.sh
 ```
 
 #### Contribute

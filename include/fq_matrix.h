@@ -4,6 +4,7 @@
 
 Matrix *mat_create(Vi row, Vi col, Vf fill);
 Vi mat_destroy(Matrix *mat);
+Vf mat_find(const Matrix *const mat, Vi row, Vi col);
 void identity(Matrix *mat);
 Matrix *clone(const Matrix * const mat);
 void copy(Matrix *dest, const Matrix *const src);
